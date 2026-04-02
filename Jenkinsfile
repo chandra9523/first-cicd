@@ -3,12 +3,6 @@ pipeline {
 
     stages {
 
-        stage('Clone') {
-            steps {
-                git 'https://github.com/chandra9523/first-cicd.git'
-            }
-        }
-
         stage('Run Tests inside Docker') {
             steps {
                 sh '''
