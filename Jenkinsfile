@@ -21,7 +21,7 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                sh 'docker push chandra9523/first-cicd:latest'
+                sh 'docker push cbdocker2525/first_cicd:latest'
             }
         }
 
