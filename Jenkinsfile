@@ -15,7 +15,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t chandra9523/first-cicd:latest .'
+                sh 'docker build -t cbdocker2525/first-cicd:latest .'
             }
         }
 
