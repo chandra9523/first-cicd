@@ -1,30 +1,56 @@
 pipeline {
+
     agent any
 
     stages {
 
-        stage('Run Tests inside Docker') {
+        stage('Clone Repo') {
+            steps {
+                git branch: 'main', url: 'https://github.com/chandra9523/first-cicd.git'
+            }
+        }
+
+        stage('Setup Python Environment') {
             steps {
                 sh '''
-                docker run --rm -v $(pwd):/app -w /app python:3.9 \
-                sh -c "pip install -r requirements.txt && pytest"
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install -r requirements.txt
                 '''
             }
         }
+
+        stage('Run Application') {
+            steps {
+                sh '''
+                . venv/bin/activate
+                python app.py
+                '''
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh '''
+                . venv/bin/activate
+                pytest
+                '''
+            }
+        }
+        
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t myapp .'
+                sh 'docker build -t chandra9523/first-cicd:latest .'
             }
         }
 
-        stage('Run Container') {
+        stage('Push Docker Image') {
             steps {
-                sh '''
-                docker rm -f myapp-container || true
-                docker run -d -p 5000:5000 --name myapp-container myapp
-                '''
+                sh 'docker push cbdocker2525/first-ci-cd:latest'
             }
         }
+
+    
     }
 }
